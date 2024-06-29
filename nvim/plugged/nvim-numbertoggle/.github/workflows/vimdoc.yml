@@ -1,0 +1,28 @@
+name: panvimdoc
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - README.md
+      - doc/numbertoggle.txt
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.PAT }}
+
+      - name: Generate docs
+        uses: kdheepak/panvimdoc@main
+        with:
+          vimdoc: numbertoggle
+          description: automatic toggle between hybrid and absolute line numbers
+
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "docs(vimdoc): auto generate from readme"
+          branch: ${{ github.head_ref }}
